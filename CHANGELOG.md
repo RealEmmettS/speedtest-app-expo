@@ -5,6 +5,19 @@ All notable changes to QubeTX Speed Test will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-03-13
+
+### Changed
+- Replaced app icon with new cassette tape design across all platforms
+- Updated `splash.backgroundColor` and `android.adaptiveIcon.backgroundColor` from `#e9e9e9` to `#a5a5a5` to match new icon background
+
+### Added
+- Full iOS icon set (12 sizes from 1024px to 29px) in `assets/icons/ios/`
+- Full Android adaptive icon set (5 mipmap densities, each with launcher, foreground, background, and monochrome variants) in `assets/icons/android/`
+- Android 13+ monochrome themed icon support via `android-icon-monochrome.png`
+
+---
+
 ## [1.0.3] - 2026-03-13
 
 ### Fixed
