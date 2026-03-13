@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Tab bar icons not appearing on iOS — SF Symbols via `sf` prop silently fail to render in Expo Go; switched to `@expo/vector-icons/Ionicons` via `NativeTabs.Trigger.VectorIcon` for reliable cross-platform icon rendering while keeping native Material `md` icons on Android
+- Tab bar icons invisible on iOS due to white tint on light background — added `iconColor="#111111"` to NativeTabs for consistent dark icon rendering
 - Android Settings page content overlapping camera hole and status bar — `headerTransparent: true` caused content to render behind the header on Android since `contentInsetAdjustmentBehavior` is iOS-only; made `headerTransparent` conditional (`Platform.OS === 'ios'`) and added solid header background on Android
 
 ### Added

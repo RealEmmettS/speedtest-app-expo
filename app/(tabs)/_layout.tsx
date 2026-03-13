@@ -3,7 +3,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabLayout() {
   return (
-    <NativeTabs>
+    <NativeTabs iconColor="#111111">
       <NativeTabs.Trigger name="(test)">
         <NativeTabs.Trigger.Icon
           md="speed"
