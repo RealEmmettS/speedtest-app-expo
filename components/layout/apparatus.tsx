@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LayoutChangeEvent, View, useWindowDimensions } from 'react-native';
+import { useRouter } from 'expo-router';
 import { colors, borders } from '@/theme/tokens';
 import TopBar from './top-bar';
 import TapeMechanism from '@/components/mechanism/tape-mechanism';
@@ -12,16 +13,20 @@ import { useSpeedTestContext } from '@/store/speed-test-context';
 export default function Apparatus() {
   const { width } = useWindowDimensions();
   const ctx = useSpeedTestContext();
+  const router = useRouter();
   const [apparatusHeight, setApparatusHeight] = useState(0);
 
   const currentSpeed = ctx.progress.downloadSpeed ?? ctx.progress.uploadSpeed ?? 0;
 
   const handleAction = () => {
     if (ctx.phase === 'idle') {
+      // Show consent modal if NDT7 is needed but consent not given
+      if (ctx.settings.providerMode !== 'cloudflare' && !ctx.settings.dataPolicyAccepted) {
+        router.push('/consent-modal');
+        return;
+      }
       ctx.startTest();
-    } else if (ctx.phase === 'complete') {
-      ctx.resetTest();
-    } else if (ctx.phase === 'error') {
+    } else if (ctx.phase === 'complete' || ctx.phase === 'error') {
       ctx.resetTest();
     } else {
       ctx.stopTest();

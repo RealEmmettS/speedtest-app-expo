@@ -5,6 +5,19 @@ All notable changes to QubeTX Speed Test will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-03-13
+
+### Fixed
+- Tab bar icons not appearing on iOS — replaced invalid SF Symbol name `gauge.open.with.lines.needle.84percent.exclamation` with standard `speedometer`; changed `gear` to `gearshape` for consistency
+- Action button (play/stop/check) off-center in cassette tape mechanism on both platforms — replaced unreliable percentage-based absolute positioning (`left: '50%'` + `translateX`) with a full-width flexbox overlay for reliable cross-platform centering
+- Red debug box appearing at bottom of speed test screen — Expo's `useDebugZeroHeight` hook was adding a red border with `minHeight: 40` to the hidden DOM component; removed `matchContents: true` and set 1px size to suppress the debug style
+- Android content overlapping camera hole and status bar — moved safe area inset (`insets.top`) from ScrollView content padding to the outer View's `paddingTop` so the entire content area sits below the system UI
+
+### Added
+- Consent modal prompt when starting a speed test with provider mode set to "Both" or "NDT7" without prior data policy acceptance — previously the app silently fell back to Cloudflare-only mode; now it shows the M-Lab data policy consent modal before starting
+
+---
+
 ## [1.0.1] - 2026-03-13
 
 ### Fixed

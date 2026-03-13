@@ -11,10 +11,10 @@ export default function SpeedTestScreen() {
   const ctx = useSpeedTestContext();
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.bgCanvas }}>
+    <View style={{ flex: 1, backgroundColor: colors.bgCanvas, paddingTop: insets.top }}>
       <ScrollView
         contentContainerStyle={{
-          paddingTop: insets.top + 16,
+          paddingTop: 16,
           paddingBottom: insets.bottom + 100,
           paddingHorizontal: 16,
           alignItems: 'center',
@@ -39,7 +39,7 @@ export default function SpeedTestScreen() {
         onResult={ctx.handleResult}
         onDnsUpdate={ctx.handleDnsUpdate}
         onError={ctx.handleError}
-        dom={{ style: { width: 0, height: 0, position: 'absolute', opacity: 0 } }}
+        dom={{ style: { position: 'absolute', width: 1, height: 1, opacity: 0, overflow: 'hidden', pointerEvents: 'none' } }}
       />
     </View>
   );

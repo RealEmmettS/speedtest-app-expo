@@ -4,8 +4,7 @@ import { colors, typography } from '@/theme/tokens';
 
 export default function ResultsStamp() {
   return (
-    <Animated.View
-      entering={BounceIn.duration(600)}
+    <View
       style={{
         position: 'absolute',
         top: '30%',
@@ -16,7 +15,8 @@ export default function ResultsStamp() {
         transform: [{ rotate: '-12deg' }],
       }}
     >
-      <View
+      <Animated.View
+        entering={BounceIn.duration(600)}
         style={{
           borderWidth: 3,
           borderColor: colors.ink,
@@ -37,7 +37,7 @@ export default function ResultsStamp() {
         >
           TEST COMPLETE
         </Text>
-      </View>
-    </Animated.View>
+      </Animated.View>
+    </View>
   );
 }
