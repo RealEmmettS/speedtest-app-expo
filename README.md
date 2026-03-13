@@ -1,1 +1,0 @@
-# speedtest-app-expo
