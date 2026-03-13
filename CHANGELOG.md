@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Configured App Store Connect Apple ID (`6760538784`) in `eas.json` for iOS submission
 
+### Added
+- iOS export compliance declaration (`usesNonExemptEncryption: false`) to skip the manual compliance prompt on each TestFlight upload
+
 ---
 
 ## [1.0.5] - 2026-03-13

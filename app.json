@@ -20,6 +20,9 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         }
+      },
+      "config": {
+        "usesNonExemptEncryption": false
       }
     },
     "android": {
