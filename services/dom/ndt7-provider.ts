@@ -1,14 +1,102 @@
 import type { SpeedTestProvider, SpeedTestProgress, SpeedTestResult, TestDuration } from '@/types/speedtest';
 
+// Inline NDT7 worker code as Blob URLs so they work inside the DOM component's webview.
+// The @m-lab/ndt7 library normally loads these from file paths via new Worker(filename),
+// but those file paths don't resolve in an Expo DOM component. Creating Blob URLs from
+// the worker source code avoids the path resolution issue entirely.
+function createWorkerBlobUrl(code: string): string {
+  const blob = new Blob([code], { type: 'application/javascript' });
+  return URL.createObjectURL(blob);
+}
+
+// Download worker source (from @m-lab/ndt7/src/ndt7-download-worker.js)
+const DOWNLOAD_WORKER_SRC = `
+const workerMain = function(ev) {
+  'use strict';
+  const url = ev.data['///ndt/v7/download'];
+  const sock = new WebSocket(url, 'net.measurementlab.ndt.v7');
+  let now;
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+    now = () => performance.now();
+  } else {
+    now = () => Date.now();
+  }
+  sock.onclose = function() { postMessage({ MsgType: 'complete' }); };
+  sock.onerror = function(ev) { postMessage({ MsgType: 'error', Error: ev.type }); };
+  let start = now(); let previous = start; let total = 0;
+  sock.onopen = function() { start = now(); previous = start; total = 0; postMessage({ MsgType: 'start', Data: { ClientStartTime: start } }); };
+  sock.onmessage = function(ev) {
+    total += (typeof ev.data.size !== 'undefined') ? ev.data.size : ev.data.length;
+    const t = now(); const every = 250;
+    if (t - previous > every) {
+      postMessage({ MsgType: 'measurement', ClientData: { ElapsedTime: (t - start) / 1000, NumBytes: total, MeanClientMbps: (total / (t - start)) * 0.008 }, Source: 'client' });
+      previous = t;
+    }
+    if (typeof ev.data === 'string') { postMessage({ MsgType: 'measurement', ServerMessage: ev.data, Source: 'server' }); }
+  };
+};
+self.onmessage = workerMain;
+`;
+
+// Upload worker source (from @m-lab/ndt7/src/ndt7-upload-worker.js)
+const UPLOAD_WORKER_SRC = `
+const workerMain = function(ev) {
+  const url = ev.data['///ndt/v7/upload'];
+  const sock = new WebSocket(url, 'net.measurementlab.ndt.v7');
+  let now;
+  if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+    now = () => performance.now();
+  } else {
+    now = () => Date.now();
+  }
+  let closed = false;
+  sock.onclose = function() { if (!closed) { closed = true; postMessage({ MsgType: 'complete' }); } };
+  sock.onerror = function(ev) { postMessage({ MsgType: 'error', Error: ev.type }); };
+  sock.onmessage = function(ev) { if (typeof ev.data !== 'undefined') { postMessage({ MsgType: 'measurement', Source: 'server', ServerMessage: ev.data }); } };
+  function postClientMeasurement(total, bufferedAmount, start) {
+    const numBytes = total - bufferedAmount;
+    const elapsedTime = (now() - start) / 1000;
+    const meanMbps = numBytes * 8 / 1000000 / elapsedTime;
+    postMessage({ MsgType: 'measurement', ClientData: { ElapsedTime: elapsedTime, NumBytes: numBytes, MeanClientMbps: meanMbps }, Source: 'client', Test: 'upload' });
+  }
+  function uploader(data, start, end, previous, total) {
+    if (closed) return;
+    const t = now();
+    if (t >= end) { sock.close(); postClientMeasurement(total, sock.bufferedAmount, start); return; }
+    const maxMessageSize = 8388608;
+    const clientMeasurementInterval = 250;
+    const nextSizeIncrement = (data.length >= maxMessageSize) ? Infinity : 16 * data.length;
+    if ((total - sock.bufferedAmount) >= nextSizeIncrement) { data = new Uint8Array(data.length * 2); }
+    const desiredBuffer = 7 * data.length;
+    if (sock.bufferedAmount < desiredBuffer) { sock.send(data); total += data.length; }
+    if (t >= previous + clientMeasurementInterval) { postClientMeasurement(total, sock.bufferedAmount, start); previous = t; }
+    setTimeout(() => uploader(data, start, end, previous, total), 0);
+  }
+  sock.onopen = function() {
+    const data = new Uint8Array(8192);
+    const start = now(); const duration = 10000; const end = start + duration;
+    postMessage({ MsgType: 'start', Data: { StartTime: start / 1000, ExpectedEndTime: end / 1000 } });
+    uploader(data, start, end, start, 0);
+  };
+};
+self.onmessage = workerMain;
+`;
+
 export class NDT7Provider implements SpeedTestProvider {
   name = 'M-Lab NDT7';
   supportsPacketLoss = false;
   requiresConsent = true;
 
   private aborted = false;
+  private downloadWorkerUrl: string | null = null;
+  private uploadWorkerUrl: string | null = null;
 
   async start(onProgress: (p: SpeedTestProgress) => void, duration: TestDuration = 'auto'): Promise<SpeedTestResult> {
     this.aborted = false;
+
+    // Create inline worker Blob URLs
+    this.downloadWorkerUrl = createWorkerBlobUrl(DOWNLOAD_WORKER_SRC);
+    this.uploadWorkerUrl = createWorkerBlobUrl(UPLOAD_WORKER_SRC);
 
     // NDT7 is a UMD module — import it dynamically
     const ndt7Module = await import('@m-lab/ndt7');
@@ -37,8 +125,8 @@ export class NDT7Provider implements SpeedTestProvider {
         ndt7.test(
           {
             userAcceptedDataPolicy: true,
-            downloadworkerfile: '/ndt7-download-worker.js',
-            uploadworkerfile: '/ndt7-upload-worker.js',
+            downloadworkerfile: this.downloadWorkerUrl!,
+            uploadworkerfile: this.uploadWorkerUrl!,
             metadata: {
               client_name: 'qubetx-speedtest',
               client_version: '1.0.0',
@@ -189,6 +277,8 @@ export class NDT7Provider implements SpeedTestProvider {
       });
     }
 
+    this.revokeWorkerUrls();
+
     const avgDl = allDlSpeeds.length > 0 ? allDlSpeeds.reduce((a, b) => a + b, 0) / allDlSpeeds.length : (lastDlSpeed ?? 0);
     const avgUl = allUlSpeeds.length > 0 ? allUlSpeeds.reduce((a, b) => a + b, 0) / allUlSpeeds.length : (lastUlSpeed ?? 0);
     const avgPing = allPings.length > 0 ? allPings.reduce((a, b) => a + b, 0) / allPings.length : (lastPing ?? 0);
@@ -209,6 +299,18 @@ export class NDT7Provider implements SpeedTestProvider {
 
   stop() {
     this.aborted = true;
+    this.revokeWorkerUrls();
+  }
+
+  private revokeWorkerUrls() {
+    if (this.downloadWorkerUrl) {
+      URL.revokeObjectURL(this.downloadWorkerUrl);
+      this.downloadWorkerUrl = null;
+    }
+    if (this.uploadWorkerUrl) {
+      URL.revokeObjectURL(this.uploadWorkerUrl);
+      this.uploadWorkerUrl = null;
+    }
   }
 }
 

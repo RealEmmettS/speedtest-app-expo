@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from 'react';
+import { createContext, use, ReactNode } from 'react';
 import { useSettings } from '@/hooks/use-settings';
 import { useSpeedTest } from '@/hooks/use-speed-test';
 import {
@@ -71,7 +71,7 @@ export function SpeedTestContextProvider({ children }: { children: ReactNode }) 
 }
 
 export function useSpeedTestContext(): SpeedTestContextValue {
-  const ctx = require('react').use(SpeedTestContext);
+  const ctx = use(SpeedTestContext);
   if (!ctx) throw new Error('useSpeedTestContext must be used within SpeedTestContextProvider');
   return ctx;
 }

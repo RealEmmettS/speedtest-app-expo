@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { useState } from 'react';
+import { LayoutChangeEvent, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -11,12 +12,21 @@ interface ProgressBarProps {
 }
 
 export default function ProgressBar({ progress, height = 4 }: ProgressBarProps) {
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    setContainerWidth(e.nativeEvent.layout.width);
+  };
+
+  const clampedProgress = Math.min(100, Math.max(0, progress));
+
   const animatedStyle = useAnimatedStyle(() => ({
-    width: withTiming(`${Math.min(100, Math.max(0, progress))}%`, { duration: 300 }),
+    width: withTiming((clampedProgress / 100) * containerWidth, { duration: 300 }),
   }));
 
   return (
     <View
+      onLayout={onLayout}
       style={{
         height,
         backgroundColor: colors.bgScreen,

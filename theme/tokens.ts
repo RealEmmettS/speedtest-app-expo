@@ -23,17 +23,17 @@ export const typography = {
   fontFamilyExtraBold: 'Inter_800ExtraBold',
   numberLarge: {
     fontSize: 56,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: 'Inter_500Medium' as string,
     lineHeight: 56,
     letterSpacing: -2.2,
-    fontVariant: ['tabular-nums'] as const,
+    fontVariant: ['tabular-nums'] as ('tabular-nums')[],
   },
   numberMedium: {
     fontSize: 32,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: 'Inter_500Medium' as string,
     lineHeight: 32,
     letterSpacing: -1.3,
-    fontVariant: ['tabular-nums'] as const,
+    fontVariant: ['tabular-nums'] as ('tabular-nums')[],
   },
   unit: {
     fontSize: 14,
@@ -41,10 +41,10 @@ export const typography = {
   },
   metaLabel: {
     fontSize: 10,
-    textTransform: 'uppercase' as const,
+    textTransform: 'uppercase' as 'uppercase',
     letterSpacing: 1.5,
-    fontFamily: 'Inter_600SemiBold',
-    color: '#111111',
+    fontFamily: 'Inter_600SemiBold' as string,
+    color: '#111111' as string,
   },
   metaValue: {
     fontSize: 13,

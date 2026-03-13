@@ -33,7 +33,7 @@ export default function DnsBar({ dnsCheck, isRunning }: DnsBarProps) {
         {/* Dots */}
         {Array.from({ length: 8 }).map((_, i) => {
           const probe = probes[i];
-          let dotColor = colors.bgScreen; // pending
+          let dotColor: string = colors.bgScreen; // pending
           if (probe) {
             dotColor = probe.status === 'pass' ? '#34c759' : colors.error;
           }

@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router/stack';
-import { PlatformColor } from 'react-native';
 
 export default function SettingsLayout() {
   return (
@@ -9,7 +8,7 @@ export default function SettingsLayout() {
         headerShadowVisible: false,
         headerLargeTitleShadowVisible: false,
         headerLargeStyle: { backgroundColor: 'transparent' },
-        headerTitleStyle: { color: PlatformColor('label') },
+        headerTitleStyle: { color: '#111111' },
         headerLargeTitle: true,
         headerBlurEffect: 'none',
         headerBackButtonDisplayMode: 'minimal',

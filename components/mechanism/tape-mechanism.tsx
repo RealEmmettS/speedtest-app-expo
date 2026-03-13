@@ -59,11 +59,11 @@ export default function TapeMechanism({ phase, currentProvider, speed, onAction 
             height: 2,
           }}
         >
-          <Svg width="100%" height={2}>
+          <Svg width={reelSize + gapBetweenReels} height={2}>
             <Line
               x1={0}
               y1={1}
-              x2="100%"
+              x2={reelSize + gapBetweenReels}
               y2={1}
               stroke={colors.ink}
               strokeWidth={1.5}

@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 import {
   TestPhase,
   SpeedTestProgress,
@@ -51,6 +52,11 @@ export function useSpeedTest(settings: Settings) {
     setPhase('complete');
     setCommand('idle');
 
+    // Haptic feedback on completion (iOS only)
+    if (process.env.EXPO_OS === 'ios') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+
     // Auto-copy results
     if (settingsRef.current.autoCopyResults) {
       const formatted = formatResultsText(r, settingsRef.current);
@@ -70,6 +76,11 @@ export function useSpeedTest(settings: Settings) {
     setPhase('error');
     setProgress((prev) => ({ ...prev, phase: 'error', error }));
     setCommand('idle');
+
+    // Haptic feedback on error (iOS only)
+    if (process.env.EXPO_OS === 'ios') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    }
   }, []);
 
   const startTest = useCallback(() => {

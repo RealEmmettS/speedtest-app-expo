@@ -5,6 +5,35 @@ All notable changes to QubeTX Speed Test will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-03-13
+
+### Fixed
+
+#### TypeScript Compilation
+- Resolved 6 TypeScript strict-mode errors that prevented clean `tsc --noEmit`
+- Fixed theme token `fontVariant` readonly tuple incompatibility with React Native `TextStyle` by widening array types
+- Fixed `metaLabel` token literal color/font types too narrow for style spread — cast to `string` where needed
+- Replaced `PlatformColor('label')` in settings layout header with plain `'#111111'` string to fix Android crash and `OpaqueColorValue` type error
+- Added explicit `string` type annotation to DNS bar dot color variable to resolve literal type narrowing from `as const` theme tokens
+- Created `types/m-lab-ndt7.d.ts` type declaration file for the untyped `@m-lab/ndt7` package
+
+#### Speed Test Engine
+- Fixed NDT7 Web Worker loading in Expo DOM component — workers are now inlined as Blob URLs instead of referencing file paths (`/ndt7-download-worker.js`) that don't resolve inside the webview. Download and upload worker source code from `@m-lab/ndt7` is embedded as string literals, converted to `Blob` objects, and loaded via `URL.createObjectURL()`. Blob URLs are properly revoked after test completion or cancellation to prevent memory leaks.
+
+#### Animations & UI
+- Fixed progress bar width animation — replaced Reanimated string percentage interpolation (`width: withTiming('50%')`) with numeric pixel width computed from `onLayout` container measurement, ensuring reliable cross-platform animation
+- Fixed SVG tape line between reels — replaced `x2="100%"` string (unsupported by react-native-svg) with computed numeric width `reelSize + gapBetweenReels`
+- Integrated CRT scanline overlay into apparatus layout — component existed but was not rendered; now renders via `onLayout` height measurement
+
+#### Code Quality
+- Replaced `require('react').use(SpeedTestContext)` with proper `import { use } from 'react'` — cleaner React 19 API usage pattern
+
+### Added
+- Haptic feedback on test completion (`NotificationFeedbackType.Success`) and error (`NotificationFeedbackType.Error`) via `expo-haptics` in `useSpeedTest` hook — previously only the action button had haptic feedback
+- CRT overlay now actually renders on the apparatus (was previously an unused component)
+
+---
+
 ## [1.0.0] - 2026-03-13
 
 ### Added
