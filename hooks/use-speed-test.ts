@@ -129,7 +129,7 @@ function formatResultsText(r: SpeedTestResult, settings: Settings): string {
   const dl = formatSpeed(r.downloadSpeed, settings.speedUnit);
   const ul = formatSpeed(r.uploadSpeed, settings.speedUnit);
   const lines = [
-    'QubeTX Speed Test Results',
+    'SpeedQX Results',
     '─────────────────────────',
     `Ping: ${r.ping.toFixed(1)}ms | Jitter: ${r.jitter.toFixed(1)}ms`,
     `Download: ${dl.value} ${dl.unit}`,

@@ -2,7 +2,7 @@
   <img src="https://shaughv.s3.us-east-1.amazonaws.com/brandmark/SHAUGHV-Official.svg" alt="SHAUGHV" width="160" />
 </p>
 
-<h1 align="center">QubeTX Speed Test</h1>
+<h1 align="center">SpeedQX</h1>
 
 <p align="center">
   A native iOS &amp; Android internet speed test app with a retro cassette tape interface, powered by dual-provider measurement from Cloudflare and M-Lab NDT7.
@@ -25,7 +25,7 @@
 
 ## Architecture
 
-QubeTX Speed Test uses a **two-layer architecture** that separates the native UI from the speed test measurement engine:
+SpeedQX uses a **two-layer architecture** that separates the native UI from the speed test measurement engine:
 
 ```
 ┌─────────────────────────────────────────────────┐

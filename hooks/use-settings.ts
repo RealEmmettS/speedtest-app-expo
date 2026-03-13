@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Settings, DEFAULT_SETTINGS } from '@/types/speedtest';
 
-const STORAGE_KEY = 'qubetx-speedtest-settings';
+const STORAGE_KEY = 'speedqx-settings';
 
 export function useSettings() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "QubeTX Speed Test",
-    "slug": "qubetx-speedtest",
+    "name": "SpeedQX",
+    "slug": "speedqx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "qubetx-speedtest",
+    "scheme": "speedqx",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.qubetx.speedtest",
+      "bundleIdentifier": "com.speedqx.app",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -29,7 +29,7 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "package": "com.qubetx.speedtest",
+      "package": "com.speedqx.app",
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "INTERNET",

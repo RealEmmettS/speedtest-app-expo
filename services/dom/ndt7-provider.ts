@@ -128,7 +128,7 @@ export class NDT7Provider implements SpeedTestProvider {
             downloadworkerfile: this.downloadWorkerUrl!,
             uploadworkerfile: this.uploadWorkerUrl!,
             metadata: {
-              client_name: 'qubetx-speedtest',
+              client_name: 'speedqx',
               client_version: '1.0.0',
             },
           },

@@ -1,9 +1,25 @@
 # Changelog
 
-All notable changes to QubeTX Speed Test will be documented in this file.
+All notable changes to SpeedQX will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.5] - 2026-03-13
+
+### Changed
+- Renamed app from "QubeTX Speed Test" to "SpeedQX" across all identifiers
+- Bundle ID (iOS): `com.qubetx.speedtest` → `com.speedqx.app`
+- Package name (Android): `com.qubetx.speedtest` → `com.speedqx.app`
+- Slug: `qubetx-speedtest` → `speedqx`
+- Deep linking scheme: `qubetx-speedtest` → `speedqx`
+- NPM package name: `speedtest-app-expo` → `speedqx`
+- AsyncStorage key: `qubetx-speedtest-settings` → `speedqx-settings`
+- NDT7 client identifier: `qubetx-speedtest` → `speedqx`
+- Clipboard results header: "QubeTX Speed Test Results" → "SpeedQX Results"
+- Updated README and CHANGELOG references
+
+---
 
 ## [1.0.4] - 2026-03-13
 
