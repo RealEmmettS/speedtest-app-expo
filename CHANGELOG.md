@@ -28,3 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hooks: useSettings (AsyncStorage), useSpeedTest (lifecycle + DOM bridge), useNetworkInfo, useClock
 - SpeedTestContext provider wrapping all state management
 - Inter font family loading (400-800 weights)
+- Haptic feedback on iOS (action button press, test complete, errors)
+- Auto-copy formatted results to clipboard
+- Number formatting with auto unit conversion (Mbps/Kbps/Gbps)
+- Error state UI with red border and "CONNECTION FAILURE" status
+- Responsive layout scaling based on screen dimensions
+- Verified web export compiles successfully (1343 modules, zero errors)

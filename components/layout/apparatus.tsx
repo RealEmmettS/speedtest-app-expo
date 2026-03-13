@@ -34,7 +34,7 @@ export default function Apparatus() {
         alignSelf: 'center',
         backgroundColor: colors.bgDevice,
         borderWidth: borders.strokeWidth,
-        borderColor: borders.strokeColor,
+        borderColor: ctx.phase === 'error' ? colors.error : borders.strokeColor,
         borderRadius: borders.radiusBox,
         borderCurve: 'continuous',
         overflow: 'hidden',
