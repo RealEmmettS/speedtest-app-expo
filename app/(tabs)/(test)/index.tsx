@@ -1,4 +1,5 @@
 import { ScrollView, View } from 'react-native';
+import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '@/theme/tokens';
 import Apparatus from '@/components/layout/apparatus';
@@ -20,6 +21,13 @@ export default function SpeedTestScreen() {
         }}
       >
         <Apparatus />
+
+        {/* SHAUGHV brandmark */}
+        <Image
+          source={{ uri: 'https://shaughv.s3.us-east-1.amazonaws.com/brandmark/SHAUGHV-Official.svg' }}
+          style={{ width: 80, height: 32, marginTop: 20, opacity: 0.2 }}
+          contentFit="contain"
+        />
       </ScrollView>
 
       {/* Hidden speed test engine (DOM component running in webview) */}
