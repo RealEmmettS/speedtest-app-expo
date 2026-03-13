@@ -5,6 +5,13 @@ All notable changes to SpeedQX will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-03-13
+
+### Added
+- EAS project ID (`4e0cf9a8-df6c-4bf3-a3c5-a2d7d4182df8`) in `app.json` extra config
+
+---
+
 ## [1.0.6] - 2026-03-13
 
 ### Changed
