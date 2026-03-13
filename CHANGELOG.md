@@ -5,6 +5,17 @@ All notable changes to QubeTX Speed Test will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-03-13
+
+### Fixed
+- Tab bar icons not appearing on iOS — SF Symbols via `sf` prop silently fail to render in Expo Go; switched to `@expo/vector-icons/Ionicons` via `NativeTabs.Trigger.VectorIcon` for reliable cross-platform icon rendering while keeping native Material `md` icons on Android
+- Android Settings page content overlapping camera hole and status bar — `headerTransparent: true` caused content to render behind the header on Android since `contentInsetAdjustmentBehavior` is iOS-only; made `headerTransparent` conditional (`Platform.OS === 'ios'`) and added solid header background on Android
+
+### Added
+- `@expo/vector-icons` dependency for tab bar icon rendering
+
+---
+
 ## [1.0.2] - 2026-03-13
 
 ### Fixed
